@@ -1,56 +1,40 @@
 import { useEffect, useState } from "react";
 import LikeList from "./components/LikeList";
 import List from "./components/List";
-import axios from "axios";
-
-
+import { fetchPlaces } from "./api/placeApi";
 
 function App() {
   const [places, setPlaces] = useState([]);
-  const [userPlaces,setUserPlaces]=useState([])
+  const [loading, setLoading] = useState(true);
+
+ 
 
   useEffect(() => {
-    
-    fetchPlaces();
-    fetchUserPlaces()
+    loadPlaces();
   }, []);
+  
+  if(loading){
+    return <h1>로딩중...</h1>
+  }
 
-  async function fetchPlaces() {
+  async function loadPlaces() {
     try {
-      const response = await axios.get("http://localhost:3000/places");
-      setPlaces(response.data.places);
-      // console.log(response);
+      setLoading(true);
+      const placeData = await fetchPlaces();
+      setPlaces(placeData);
     } catch (error) {
-      console.error("데이터를 불러오는 중 오류 발생:", error);
+      console.error("장소 데이터 로딩 중 오류 발생:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function fetchUserPlaces() {
-    try {
-      const response = await axios.get("http://localhost:3000/users/places");
-      setUserPlaces(response.data.places);
-      // console.log(response);
-    } catch (error) {
-      console.error("데이터를 불러오는 중 오류 발생:", error);
-    }
-  }
-
-  // async function handlePlaceClick(place) {
-  //   try {
-  //     const response = await axios.post("http://localhost:3000/users/places",{place});
-  //     fetchUserPlaces()
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error("장소 추가 중 오류 발생:", error);
-  //   }
-  // }
-
+  
 
   return (
-    
     <>
-      <LikeList userPlaces={userPlaces}/>
-      <List places={places} />
+      <LikeList />
+      <List places={places} loading={loading}/>
     </>
   );
 }

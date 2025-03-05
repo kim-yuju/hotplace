@@ -2,10 +2,6 @@ import "./List.css";
 
 //파일 받아서 map으로 랜더링하기
 const List = ({places}) => {
-  // const likeButton = () => {
-  //   handlePlaceClick(place.id);
-  // };
-
   return (
     <div className="list">
       <h1>맛집 목록</h1>
