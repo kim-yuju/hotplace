@@ -7,10 +7,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- 
-
-  
-
   useEffect(() => {
     loadPlaces();
   }, []);
@@ -24,7 +20,7 @@ function App() {
       setLoading(true);
       const placeData = await fetchPlaces();
       setPlaces(placeData);
-      setError(null)
+      setError(null);
     } catch (error) {
       console.error("장소 데이터 로딩 중 오류 발생:", error);
       setError(error.message || "데이터를 불러오는 데 실패했습니다.");
@@ -33,10 +29,12 @@ function App() {
     }
   }
 
+  console.log(places);
+
   return (
     <>
-    <h1>🍕전국 맛집 뿌수기🍔</h1>
-      <List places={places}  error={error}/>
+      <h1>🍕전국 맛집 뿌수기🍔</h1>
+      <List places={places} error={error} />
     </>
   );
 }
